@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import React from "react";
+import ReactQueryProvider from "@/app/providers/ReactQueryProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,12 +25,33 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html className="light"  lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased `}
       >
-        {children}
+      <ReactQueryProvider>
+          {children}
+      </ReactQueryProvider>
       </body>
     </html>
   );
 }
+
+
+import FooterLayout from "@/app/components/layout/Footer";
+
+/*
+export default function Layout({ children }: { children: React.ReactNode }) {
+    return (
+        <html>
+        <body>
+        <ReactQueryProvider>
+            {children}
+        </ReactQueryProvider>
+{/!*
+        <FooterLayout/>
+*!/}
+        </body>
+        </html>
+    )
+}*/

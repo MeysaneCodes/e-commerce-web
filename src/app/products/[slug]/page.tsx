@@ -9,7 +9,7 @@ import {useParams} from "next/navigation"
 
 
 
-
+//Components
 import {
     Button,
     Card,
@@ -19,6 +19,7 @@ import {
 import {Dispatch, SetStateAction, useEffect, useMemo, useRef, useState} from "react";
 import {Collapse, List} from "@material-tailwind/react";
 import { NavArrowDown } from "iconoir-react";
+import {Breadcrumbs,Link} from "@mui/material/"
 
 
 
@@ -264,6 +265,20 @@ export default function SingleProduct() {
     return (
 
         <div className=" h-[2000px] scroll-auto">
+            <div className="w-full p-4 ml-5 mt-5">
+                    <Breadcrumbs aria-label="breadcrumbs" className="text-gray-500">
+                        <Link underline="hover" color="inherit" href="/">
+                            Home
+                        </Link>
+                        <Link underline="hover" color="inherit" href="/">
+                            Products
+                        </Link>
+
+                        <Link underline="hover" color="inherit" href="/">
+                            {slug}
+                        </Link>
+                    </Breadcrumbs>
+            </div>
             <div className="mx-auto grid grid-cols-2 gap-2 min-h-[200vh]">
                 {/* Left column */}
                 <div

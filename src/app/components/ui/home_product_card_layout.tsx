@@ -4,7 +4,7 @@ import {
     Card,
     CardBody,
     Popover,
-    PopoverContent,
+    PopoverContent, PopoverHandler,
     Rating, Typography,
 } from "@material-tailwind/react";
 import {useState} from "react";

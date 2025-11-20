@@ -35,6 +35,7 @@ export default function CategoriesCard_NavList_Layout({sectionTitle,IN_Brands}: 
     }
 
     const scrollRight = ()=>{
+        if(!scrollbarRef.current){return}
         const maxscrollLeft = scrollbarRef.current?.scrollWidth - scrollbarRef.current?.clientWidth;
         scrollbarRef.current?.scrollBy({left:+200,behavior:"smooth"});
         setAtStart(false);

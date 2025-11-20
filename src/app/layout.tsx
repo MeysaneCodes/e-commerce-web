@@ -4,6 +4,11 @@ import "./globals.css";
 import React from "react";
 import ReactQueryProvider from "@/app/providers/ReactQueryProvider";
 
+//Navbar
+import Top_bar from "@/app/components/layout/top_bar"
+
+import Navbar from "@/app/components/layout/Navigationbar/Navbar"
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -29,6 +34,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased `}
       >
+      <Top_bar/>
+      <Navbar/>
       <ReactQueryProvider>
           {children}
       </ReactQueryProvider>

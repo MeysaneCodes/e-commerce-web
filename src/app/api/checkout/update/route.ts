@@ -28,7 +28,7 @@ export async function POST  (req:Request) {
             credentials: "include",
 
 
-            body: JSON.stringify({data : item, Qty: Qty, directional: directional}),
+            body: JSON.stringify({data : data, Qty: Qty, directional: directional}),
 
         });
 

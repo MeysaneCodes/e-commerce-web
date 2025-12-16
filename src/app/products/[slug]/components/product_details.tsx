@@ -2,12 +2,17 @@
 
 import {Dispatch, SetStateAction, useEffect, useRef, useState} from "react";
 import FetchTimeout from "@/utils/timeout";
-import {Radio, RadioGroup} from '@mui/material';
+import {Radio, CircularProgress} from '@mui/material';
 import {DiscountOption, Item_Structure} from "@/types/product_type";
 import {Button, Card, CardBody, Typography} from "@material-tailwind/react";
 import ToolTip_ui from "@/app/components/ui/Tooltip/tooltip";
 import {CartItem} from "@/types/cart_types";
 import {UpdateCart} from "@/lib/api/cart_api";
+
+
+
+//Patterns
+import {cart_count_observer} from "@/app/providers/patterns/beobachter";
 
 
 type Props = {
@@ -933,6 +938,7 @@ export default function Product_Details ({inFetched_item,setVariant, Icons }:Pro
                                             startTimeOut();
                                             if (r.success) {
                                                 console.log("called now emit")
+                                                cart_count_observer.notify();
                                                 //eventBus.emit();
                                             }
                                         })
@@ -941,7 +947,12 @@ export default function Product_Details ({inFetched_item,setVariant, Icons }:Pro
                                     className="flex-[70%] bg-black hover:opacity-70 p-2 rounded-none">
 
                                     {isTimeOutOn ?
-                                        (<div><span className="loading loading-dots loading-xl bg-white"></span></div>)
+                                     (   <div className="">
+                                            <CircularProgress thickness={5.6} size={20} sx={{
+                                                color: "red",
+                                            }}/>
+                                        </div>)
+                                        // (<div><span className="loading loading-dots loading-xl bg-white"></span></div>)
                                         :
                                         <div className="flex items-center justify-center gap-2">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

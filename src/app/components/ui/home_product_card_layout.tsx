@@ -8,6 +8,8 @@ import {
     Rating, Typography,
 } from "@material-tailwind/react";
 import {useState} from "react";
+//Routes
+import {ROUTES} from "@/lib/Routes/routes";
 
 
 
@@ -15,6 +17,8 @@ import {useState} from "react";
 
 import {Item_Structure} from "@/types/product_type";
 import {useRouter} from "next/navigation";
+
+
 
 type PrefetchFn = (slug: string | undefined) => void;
 
@@ -47,11 +51,14 @@ export default function ProductCardLayout({item,prefetch,isSponsored, isDiscount
 
 
 
+
     return (
         <div>
             <Card
                 onClick={()=>{
-                    router.push(`/products/${item.slug}`)
+                  //  router.push(`/products/${item.slug}`)
+                      if(!item.slug)console.warn("No slug found!");
+                      router.push(ROUTES.PRODUCT(item.slug ?? ""))
                 }
 
 

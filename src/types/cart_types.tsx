@@ -3,10 +3,10 @@
 
 
 
-type Discount = {
-    code: string;
-    type: "AMOUNT" | "PERCENTAGE"
-    amount: number;
+export type Discount = {
+    code?: string;
+    type?: "AMOUNT" | "PERCENTAGE"
+    amount?: number;
 };
 
 
@@ -34,25 +34,23 @@ export type CartItem = {
 };
 
 
-type ShippingMethod = {
-    code: string;
-    price: number;
+export type ShippingMethod = {
+    code?: string;
+    price?: number;
 };
 
-type ShippingAddress = {
-    address: string;
-    house_Number: string;
-    city: string;
-    country: string;
-    postalCode: string;
+export type ShippingAddress = {
+    address?: string;
+    house_Number?: string;
+    city?: string;
+    country?: string;
+    postalCode?: number;
 };
 
 export type Cart_Template = {
-    _id?: string; // ObjectId as string
     userId: string;
-    sessionId: string;
+    sessionId?: string;
     status: "active" | "ordered" | "abandoned";
-    currency: string;
     items: CartItem[];
     coupon?: Discount;
     shippingMethod?: ShippingMethod;
@@ -65,7 +63,7 @@ export type Cart_Template = {
     version: number;
     createdAt: Date;
     updatedAt: Date;
-    expiresAt: Date;
+   // expiresAt: Date;
 };
 
 

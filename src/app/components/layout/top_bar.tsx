@@ -11,12 +11,14 @@ import Drawer from '@mui/material/Drawer';
 import router, {useRouter} from "next/navigation";
 //Import Functions
 
-import {GetNumberOfCartItems} from "@/lib/api/cart_api"
 //SearchBar
 import  SearchBar from "./Search_bar"
 
 //Event
 //import {eventBus} from "../../methods/event/eventBus.tsx"
+import {cart_count_observer} from "@/app/providers/patterns/beobachter";
+
+
 import {AppRouterInstance} from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 
@@ -28,6 +30,10 @@ const buttonIcons = {
     ShoppingCart_Icon : "/icons/topBar_icons/shopping_cart_icon.svg",
      Favourite_Icon : "/icons/topBar_icons/favourite_icon.svg"
 }
+
+
+//ROUTES
+import {ROUTES} from "@/lib/Routes/routes";
 
 
 const Search_Placeholder = "Was suchst Du?";
@@ -172,34 +178,33 @@ const ICONS = ["/icons/topBar_icons/profile_icon.svg",
 
 
 
-function Icon_button_group(){
+const Icon_button_group = ()=>{
     const router = useRouter();
 
-    const [nbCartItems, setNbCartItems] = useState<number>(0);
+    const [cartCounter, setCartCounter] = useState<number>(0)
+
+
+    const update_counter = ()=>{
+        getCheckout_Badge_Counter().then((v)=>{
+            setCartCounter(v);
+            console.log("Called and updated");
+        });
+    }
+
+
+
 
 
 
     useEffect(()=>{
-        console.log("top bar ref");
 
-        //getNumberOfCartItems({setNumberCartItems: setNbCartItems});
+        getCheckout_Badge_Counter().then((v)=>{
+            setCartCounter(v);
+            cart_count_observer.subscribe(update_counter);
 
-        /*if(nbCartItems === 0){
-            DeleteCart().then();
-        }*/
-
-        GetNumberOfCartItems({setNumberCartItems: setNbCartItems}).then();
-
-/*
-
-        return eventBus.subscribe(() => {
-            GetNumberOfCartItems({setNumberCartItems: setNbCartItems}).then();
         });
-*/
 
-
-
-    },[nbCartItems])
+    },[cartCounter])
 
     return (
         <div className="ml-5 space-x-4  inline-block  flex-1  mr-2 ">
@@ -212,9 +217,25 @@ function Icon_button_group(){
                             <button
 
                                 onClick={()=>{
-                                    if(index === ICONS.length-1){
-                                        router.push("/checkout")
+                                    switch (index) {
+                                        case 0:
+                                            router.push(ROUTES.MY_PROFILE);
+                                            break;
+                                            case 1:
+                                                break;
+                                        case 2:
+                                            router.push(ROUTES.CHECKOUT_CART)
+                                            break;
+
+                                        default:
+                                            router.push(ROUTES.HOME);
+                                            break;
                                     }
+
+
+                                 /*   if(index === ICONS.length-1){
+                                        router.push(ROUTES.CHECKOUT_CART)
+                                    }*/
                                 }}
 
                                 className="inline-grid min-h-[36px] min-w-[36px] select-none place-items-center rounded-md border
@@ -226,10 +247,10 @@ function Icon_button_group(){
                         </div>
 
                         {/*Indicator*/}
-                        { index != 0 && nbCartItems &&
+                        { index != 0 && cartCounter &&
                             <span
-                                className="absolute right-[6%] top-[6%] grid min-h-[10px] min-w-[10px] -translate-y-1/2 translate-x-1/2 place-items-center rounded-full border
-                        border-slate-800 bg-red-800 px-1 py-0.5 text-xs leading-none text-slate-50">{nbCartItems}</span>
+                                className="absolute right-[6%] top-[6%] grid min-h-[10px] min-w-[10px] -translate-y-1/2 translate-x-1/2 place-items-center rounded-full border-none
+                         bg-black px-1 py-0.5 text-xs leading-none text-white">{cartCounter}</span>
                         }
                     </div>
 
@@ -256,8 +277,45 @@ function Icon_button_group(){
 }
 
 
+//TODO ADD BADGE ICON
+async function getCheckout_Badge_Counter():Promise<number>{
+    try {
+        const res = await fetch("/api/badges/top_bar_checkout_items_count_badge/GET", {
+            method: "POST",
+            headers: {
+
+                "Content-Type": "application/json",
+            },
+            credentials: "include",
+        });
+
+        const items_count = await res.json();
+        return items_count.data;
+
+
+    }catch(error){
+        console.error(error);
+        return 0;
+    }
+}
+
 export default function Top_bar_layout() {
     const router = useRouter();
+
+/*
+    useEffect(() => {
+        if(cartCounter)
+            return;
+
+        console.log("top bar ref");
+        getCheckout_Badge_Counter().then((v)=>{
+            setCartCounter(v);
+            setCartCounterIni(true);
+        });
+    }, [cartCounter]);*/
+
+
+
     return (
         <div className="w-full">
             <div className="grid grid-cols-10 p-2 w-full bg-[#CC291F] h-max-12 gap-2  items-center justify-center">
@@ -289,7 +347,7 @@ export default function Top_bar_layout() {
             </div>
 
             <div className="flex col-span-2 justify-center items-center">
-                {Icon_button_group()}
+                {<Icon_button_group/>}
             </div>
             </div>
 

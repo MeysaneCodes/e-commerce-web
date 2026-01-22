@@ -56,7 +56,7 @@ export async function  POST (req:Request){
             let session_cookie:   NextResponse<unknown> | undefined;
             console.info("[SERVER] [AUTH] [LOGIN] searching for existing session cookie ... ")
              session_cookie = await get_session(req);
-            if(!session_cookie){
+            if(!session_cookie && user && user._id){
                  console.info("[SERVER] [AUTH] [LOGIN] Session cookie not found, creating session ...");
                  session_cookie = await create_session(req,{userID: user?._id.toString() ?? "null", Email: email});
                 console.info("[SERVER] [AUTH] [LOGIN]  Session created!");
@@ -72,10 +72,18 @@ export async function  POST (req:Request){
 
 }
 
+//TODO Check if it works with type declaration.
+type session_structure  = {
+    user:{
+        id:string,
+        email:string,
+    },
+    save: ()=>Promise<void>
+}
 
 async function create_session(req:Request, {userID, Email}:{userID: string, Email: string}){
     const res = new NextResponse();
-    const session = await getIronSession(req, res, sessionOptions);
+    const session = (await getIronSession(req, res, sessionOptions) as session_structure);
     session.user = {
         id: userID,
         email: Email,

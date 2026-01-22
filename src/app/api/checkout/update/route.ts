@@ -30,7 +30,6 @@ async function  UpdateCart  ({db, user_id, cartCollection, passedData, VariantMa
     //Get cart, one product
 
 
-    //console.log("details are :" + user_id, " " + passedData.productId + " " + passedData.skuId);
 
     const cartProduct = await  db.collection(cartCollection).findOne(
         {userId: user_id,"items.productId":passedData.productId, "items.skuId": passedData.skuId},
@@ -39,11 +38,7 @@ async function  UpdateCart  ({db, user_id, cartCollection, passedData, VariantMa
     if(cartProduct){
 
         //item to be edited out of other items
-        console.warn("is item filtered or not : " + JSON.stringify(cartProduct));
-
         const existingItem = cartProduct.items.find((item:CartItem)=> item.skuId === passedData.skuId);
-        // const existingItem = cartProduct.items[0];
-
         //Qty always passed when editing product on shopping cart and when adding it first time default to 1
         if(inQty) existingItem.qty = inQty;
         else existingItem.qty++;
@@ -182,7 +177,16 @@ export async function POST (req:Request) {
         return NextResponse.json({success:false, message:server_messages_list.DB_NAME_NOT_FOUND, status:HttpStatus.INTERNAL_SERVER_ERROR});
     }
 
-    const nb_itemsFound = await  db.collection("products").findOne(
+
+
+    if(!process.env.MONGODB_PRODUCTS) {
+        console.error("[SERVER] [CHECKOUT] [POST] : " + server_messages_list.DB_PRODUCTS_NOT_FOUND);
+        return NextResponse.json({success:false, message:server_messages_list.DB_PRODUCTS_NOT_FOUND, status:HttpStatus.INTERNAL_SERVER_ERROR});
+
+    }
+
+
+    const nb_itemsFound = await  db.collection(process.env.MONGODB_PRODUCTS).findOne(
         {_id:new ObjectId(data.productId)}, {projection:{_id:0, sku:1, options:1, currency:1}});
     // console.log(nb_itemsFound);
     if(!nb_itemsFound) return ;

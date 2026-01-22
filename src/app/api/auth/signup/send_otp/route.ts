@@ -1,5 +1,5 @@
 import { Resend } from "resend";
-import send_opt_code from "@/app/providers/Resend/send_opt_code";
+import send_opt_code from "@/providers/Resend/send_opt_code";
 import {NextResponse} from "next/server";
 import {randomInt} from "node:crypto";
 import {getDB} from "@/lib/server/db/mongodb";

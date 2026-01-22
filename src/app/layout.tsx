@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import React from "react";
-import ReactQueryProvider from "@/app/providers/ReactQueryProvider";
+import ReactQueryProvider from "@/providers/ReactQueryProvider";
 
 //Navbar
-import Top_bar from "@/app/components/layout/top_bar"
+import Top_bar from "@/components/layout/top_bar"
 
-import Navbar from "@/app/components/layout/Navigationbar/Navbar"
+import Navbar from "@/components/layout/Navigationbar/Navbar"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,18 +34,17 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased `}
       >
-      <Top_bar/>
-      <Navbar/>
       <ReactQueryProvider>
           {children}
       </ReactQueryProvider>
+      <script src="../path/to/flowbite/dist/flowbite.min.js" async/>
       </body>
     </html>
   );
 }
 
 
-import FooterLayout from "@/app/components/layout/Footer";
+import FooterLayout from "@/components/layout/Footer";
 
 /*
 export default function Layout({ children }: { children: React.ReactNode }) {

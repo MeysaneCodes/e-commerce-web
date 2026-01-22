@@ -29,3 +29,9 @@ export async function getUser({db, email, password}: props) {
         console.log("[SERVER] [LIB] Error occurred when fetching User :" + err);
     }
 }
+
+
+
+export async function isUserValid(){
+
+}

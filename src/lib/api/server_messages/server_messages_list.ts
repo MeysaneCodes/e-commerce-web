@@ -3,6 +3,7 @@ export class server_messages_list{
     static DB_NAME_NOT_FOUND = "Something went wrong with Db, Please check env var";
     static DB_USER_NOT_FOUND = "Something went wrong with Db, Please check env var";
     static DB_CART_COLLECTION_NOT_FOUND = "Something went wrong with cart collection, Please check env var";
+    static DB_PRODUCTS_NOT_FOUND = "Something went wrong with products collection, Please check env var";
     static LOGGED_IN = "Logged in Successfully.";
 }
 
@@ -27,4 +28,9 @@ export class mongo_db_operations_feedback extends server_messages_list{
     static GET_DOC_FAILED = "Getting document failed";
     static GET_DOC_SUCCESS = "Getting document succeeded";
     static NO_DOC_FOUND = "No document found.";
+}
+
+
+export class products_messages_list extends server_messages_list{
+
 }
